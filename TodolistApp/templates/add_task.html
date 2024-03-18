@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Task</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Add Task</h1>
+        <form id="addTaskForm" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="project_id" value="{{ project.id }}">
+            <div class="form-group">
+                <label for="taskTitle">Task Title:</label>
+                <input type="text" class="form-control" id="taskTitle" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="taskDescription">Task Description:</label>
+                <textarea class="form-control" id="taskDescription" name="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="taskPriority">Task Priority:</label>
+                <input type="number" class="form-control" id="taskPriority" name="priority" min="1" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Task</button>
+        </form>
+        <div id="message"></div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#addTaskForm').submit(function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "add_task" project_id=project.id %}',
+                    data: formData,
+                    success: function (response) {
+                        $('#message').html('<div class="alert alert-success">Task added successfully!</div>');
+                        $('#taskTitle').val('');
+                        $('#taskDescription').val('');
+                        $('#taskPriority').val('');
+                    },
+                    error: function (xhr, status, error) {
+                        $('#message').html('<div class="alert alert-danger">Error adding task!</div>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

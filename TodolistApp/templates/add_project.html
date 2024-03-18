@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            font-family: 'Merienda', cursive;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        #message {
+            margin-top: 20px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Add Project</h1>
+        <form id="addProjectForm" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="projectName">Project Name:</label>
+                <input type="text" class="form-control" id="projectName" name="project_name" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Project</button>
+            <a href="{% url 'project_list' %}" class="btn btn-secondary mt-3">Project List</a>
+        </form>
+        <div id="message"></div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Project. All rights (kind of) reserved.</p>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#addProjectForm').submit(function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "add_project" %}',
+                    data: formData,
+                    success: function (response) {
+                        $('#message').html('<div class="alert alert-success">Project added successfully!</div>');
+                        $('#projectName').val('');
+                    },
+                    error: function (xhr, status, error) {
+                        $('#message').html('<div class="alert alert-danger">Error adding project!</div>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+

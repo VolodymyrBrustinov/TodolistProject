@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&family=Tourney:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            font-family: 'Merienda', cursive;
+            text-align: center;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 36px;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #DD2476;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background-color: #FF1493;
+        }
+
+        #projects-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #projects-modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+
+        .button-container #projects-button {
+            padding: 10px 20px;
+            background-color: #DD2476;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-container #projects-button:hover {
+            background-color: #FF1493;
+        }
+
+
+        .project-link {
+            display: block;
+            margin-bottom: 10px;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .project-link:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Projects</h1>
+    <div class="button-container">
+        <button id="projects-button">Projects</button>
+        <a href="{% url 'add_project' %}" class="btn">Add Project</a>
+    </div>
+    <div id="projects-modal">
+        <div id="projects-modal-content">
+
+            {% for project in projects %}
+
+            <a href="{% url 'task_list' project_id=project.id %}" class="project-link">{{ project.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Project. All rights (kind of) reserved.</p>
+    </footer>
+
+    <script>
+
+        const projectsButton = document.getElementById('projects-button');
+        const projectsModal = document.getElementById('projects-modal');
+
+        projectsButton.addEventListener('click', () => {
+            projectsModal.style.display = 'flex';
+        });
+
+
+        projectsModal.addEventListener('click', (event) => {
+            if (event.target === projectsModal) {
+                projectsModal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
